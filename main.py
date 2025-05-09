@@ -11,13 +11,14 @@ turtle.shape(image)
 writer = turtle.Turtle()
 writer.penup()
 playing = True
-
+answer_state = screen.textinput(title="Guess the State", prompt="What's another state's name?")
+data = pd.read_csv('50_states.csv')
 while playing:
-    answer_state = screen.textinput(title="Guess the State", prompt="What's another state's name?")
+
     print(answer_state)
 
-    data = pd.read_csv('50_states.csv')
-    response_answer = data[data["state"] == answer_state]
+
+    response_answer = data[data["state"].str.lower() == answer_state.lower()]
     if len(response_answer) == 1:
         if answer_state in guessed_states:
             print("you already guessed this")
@@ -29,6 +30,17 @@ while playing:
 
             writer.goto(x_cor,y_cor)
             writer.write(answer_state)
+            answer_state = screen.textinput(title="Guess the State", prompt=f"Current score {score}.What's "
+                                                                            f"another state's name?")
+    else:
+        playing = False
+        answer_state = screen.textinput(title="Guess the State", prompt=f"Sorry {answer_state} is "
+                                                                        f"not a state you lose")
+        turtle.exitonclick()
+    if len(guessed_states) == 50:
+        answer_state = screen.textinput(title="Guess the State", prompt=f"You Guessed them all right")
+        playing=False
+        turtle.exitonclick()
 
 
 turtle.mainloop()
