@@ -37,11 +37,13 @@ while playing:
         answer_state = screen.textinput(title="Guess the State", prompt=f"Sorry {answer_state} is "
                                                                         f"not a state you lose")
         turtle.exitonclick()
-    if len(guessed_states) == 50:
+        unguessed = data[~data["state"].isin(guessed_states)]
+        unguessed['state'].to_csv('answers.csv')
+    if len(guessed_states) == 51:
         answer_state = screen.textinput(title="Guess the State", prompt=f"You Guessed them all right")
         playing=False
         turtle.exitonclick()
 
 
-turtle.mainloop()
+# turtle.mainloop()
 
