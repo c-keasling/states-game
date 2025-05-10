@@ -13,6 +13,8 @@ writer.penup()
 playing = True
 answer_state = screen.textinput(title="Guess the State", prompt="What's another state's name?")
 data = pd.read_csv('50_states.csv')
+all_states = data["state"].str.lower().to_list()
+print(all_states)
 while playing:
 
     print(answer_state)
@@ -37,8 +39,9 @@ while playing:
         answer_state = screen.textinput(title="Guess the State", prompt=f"Sorry {answer_state} is "
                                                                         f"not a state you lose")
         turtle.exitonclick()
-        unguessed = data[~data["state"].isin(guessed_states)]
-        unguessed['state'].to_csv('answers.csv')
+        unguessed = [state for state in all_states if state not in guessed_states]
+        new_data = pd.DataFrame(unguessed)
+        new_data.to_csv('answers.csv')
     if len(guessed_states) == 51:
         answer_state = screen.textinput(title="Guess the State", prompt=f"You Guessed them all right")
         playing=False
